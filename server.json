@@ -1,0 +1,10 @@
+{
+    "gameServ":true,
+    "backupServ":true,
+    "discordBot":true,
+    "DNS":true,
+    "servConnexion":true,
+    "API":true,
+    "multiplayer":true,
+    "PCC":true
+}

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <meta name="description"
+          content="Le status en temps réel des services Paris Metro Driver!">
+    <meta http-equiv="content-language" content="fr">
+    <meta name="robots" content="index">
+
+    <meta name="keywords"
+          content="metro, driver, status, panne, simulator, paris, subway, train, mp05, mp89, mp14, mf01, mf19, mf67, mf77, mf88, mp59, mp73, ligne, mÃ©tro, ratp, idfm, france, aerien, station, jeux, beta, game, tram, strasbourg, idf, tramway, pmd, beta, 2.1, 2.2, jeu, gratuit, en ligne, alternative">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PMD Status">
+    <meta property="og:url" content="status.pmdapp.fr">
+    <meta property="og:description"
+          content="Le status en temps réel des services Paris Metro Driver!">
+    <meta property="og:site_name" content="PMD : Conduire le métro Parisien">
+    <meta property="og:image:width" content="284">
+    <meta property="og:image:height" content="170">
+    <meta property="og:image" content="https://status.pmdapp.fr/logo-status.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PMD Status">
+    <meta name="twitter:description"
+          content="Le status en temps réel des services Paris Metro Driver!">
+    <meta name="twitter:image" content="https://status.pmdapp.fr/logo-status.png">
+    <link rel="icon" href="favicon.png">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status de nos services</title>
+    <style>
+        body {
+            text-align: center;
+            background-image: url('./src/background.png');
+            background-repeat: repeat;
+            font-family: Parisine, Helvetica, sans-serif;
+            overflow-y: hidden;
+
+        }
+
+        #icon_status{
+            margin-top: -3px;
+            width: 24px;
+            height: 24px;
+            background: url("./src/tick.png") no-repeat center;
+            display: flex;
+            background-size: contain !important;
+            position: relative;
+        }
+
+
+        #icon_dropdown{
+            margin-left: auto;
+            margin-top: -3px;
+            width: 24px;
+            height: 24px;
+            background: url("./src/drop.png") no-repeat center;
+            display: flex;
+            background-size: contain !important;
+            position: relative;
+            transition: 150ms ease-in-out;
+            transform: rotateZ(270deg);
+        }
+
+        .icon_dropdownClicked{
+            transform: rotateZ(360deg) !important;
+        }
+
+
+        .bandeau{
+            background-color: #3DA751;
+            height: 2vh;
+            display: inline-flex;
+            border-radius: 10px;
+            color: white;
+            text-align: left;
+            padding: 10px;
+            width: 67vw;
+            margin-top: 2vh;
+            margin-bottom: 2vh;
+            position: relative;
+            transition: 150ms ease-in-out;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .bandeauClique{
+            height: 75vh;
+        }
+
+        .bandeauYellow{
+            background-color: #FAFF00;
+            color: black;
+        }
+
+        .bandeauOrange{
+            background-color: #D2891A;
+        }
+
+        .bandeauRed{
+            background-color: #FF0000;
+        }
+
+        .bandeauBlue{
+            background-color: #1A7AD2;
+        }
+
+
+        #text_status{
+            margin-left: 10px;
+            display: flex;
+            position: relative;
+            line-height: 24px;
+        }
+
+        #imgSpan{
+            margin-right: 2vh;
+        }
+
+
+        .btnContainer{
+            margin: auto;
+        }
+
+        .btnDiv{
+            background-color: #7C7C7C;
+            border-radius: 1vh;
+            border: 3px solid;
+            border-color: #AEAEAE;
+        }
+
+        .btnDivHS{
+            border: 3px solid;
+            border-color: #FF3333;
+        }
+
+        .btnDivWarn{
+            border: 3px solid;
+            border-color: #E3E558;
+        }
+
+        .btnDivMaintenance{
+            border: 3px solid;
+            border-color: #1A7AD2;
+        }
+
+        .btnElement{
+            width: 600px;
+            height: 80px;
+            text-align: left;
+            padding-inline: 38px;
+            padding-bottom: 20px;
+            /*border: 3px solid;
+            border-color: #AEAEAE;*/
+        }
+
+        .elemTitle{
+            color: white;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .elemStatus{
+            color: #C4C4C4;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .texts{
+            margin-left: 2vw;
+        }
+
+        .btnInside{
+            width: 100%;
+            height: 80px;
+            /*border: 3px solid;
+            border-color: #fc8484;*/
+        }
+
+        .imageZone{
+            position: flex;
+            /*border: 3px solid;
+            border-color: #84fcb2;*/
+        }
+        .textsZone{
+            /*border: 3px solid;
+            border-color: #84aefc;*/
+            width: 80%;
+            padding: 0;
+        }
+
+        .bottomLinks{
+            color: #1FBCFF;
+        }
+
+        .upTextsContainer{
+            position: absolute;
+            margin-top: 2vh;
+        }
+
+        .adminBtns{
+            width: 100%;
+        }
+
+        #upZone{
+            margin: 0px;
+        }
+
+        h5{
+            margin: 1vh;
+        }
+
+    </style>
+</head>
+<body>
+    <img src="./src/logo status.png">
+    <br>
+
+    <div class="bandeau " id="bandeau">
+        <span id="icon_status"></span><span id="text_status">Tous les services sont opérationnels.</span><span id="icon_dropdown"></span>
+
+        <div class="upTextsContainer" id="upTextsContainer" style="visibility: hidden;">
+            <h2 class="infoTextComments">Commentaires des développeurs</h2>
+            <div class="upZone" id="upZone"></div>
+        </div>
+    </div>
+
+
+
+
+    <div class="btns">
+        <table class="btnContainer">
+            <tr class="btnRow">
+                <td class="btnElement">
+                    <div class="btnDiv" id="gameServDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            Serveur de jeu
+                                        </h2>
+                                        <h3 class="elemStatus" id="gameServText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="gameServImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+                <td class="btnElement">
+                    <div class="btnDiv" id="backupServDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            Serveur de backup
+                                        </h2>
+                                        <h3 class="elemStatus" id="backupServText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="backupServImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr class="btnRow">
+                <td class="btnElement">
+                    <div class="btnDiv" id="discordBotDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            Bot Discord
+                                        </h2>
+                                        <h3 class="elemStatus" id="discordBotText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="discordBotImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+                <td class="btnElement">
+                    <div class="btnDiv" id="DNSDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            DNS
+                                        </h2>
+                                        <h3 class="elemStatus" id="DNSText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="DNSImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="btnRow">
+                <td class="btnElement">
+                    <div class="btnDiv" id="servConnexionDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            Connexion aux serveurs
+                                        </h2>
+                                        <h3 class="elemStatus" id="servConnexionText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="servConnexionImg">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+
+                <td class="btnElement">
+                    <div class="btnDiv" id="APIDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            API
+                                        </h2>
+                                        <h3 class="elemStatus" id="APIText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="APIImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="btnRow">
+                <td class="btnElement">
+                    <div class="btnDiv" id="multiplayerDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            Service multijoueur
+                                        </h2>
+                                        <h3 class="elemStatus" id="multiplayerText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="multiplayerImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+                <td class="btnElement">
+                    <div class="btnDiv" id="PCCDiv">
+                        <table class="btnInside">
+                            <tr id="uniqueElementsRow">
+                                <td class="textsZone">
+                                    <div class="texts">
+                                        <h2 class="elemTitle">
+                                            PCC multijoueur
+                                        </h2>
+                                        <h3 class="elemStatus" id="PCCText">
+                                            Normal
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="imageZone">
+                                    <img src="./src/online.png" alt="" id="PCCImg">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
